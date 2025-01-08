@@ -1,0 +1,69 @@
+---
+title: "NFIP explore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+    html_document:
+        df_print: paged
+        theme: cosmo
+        toc: yes
+    pdf_document:
+        toc: yes
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "build") })
+---
+
+```{r setup, echo=F, include=F}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+if (!requireNamespace('pacman', quietly = TRUE)){install.packages('pacman')}
+pacman::p_load(sf, tigris, MetBrewer, lubridate, arrow, knitr, kableExtra, patchwork, rfema)
+
+raw_data_dir <- "/Users/laurenwilner/Desktop/Desktop/epidemiology_PhD/01_data/raw/"
+fema_data_sets <- fema_data_sets()
+
+pal <- met.brewer("Derain", 9)
+```
+
+# Background from openFEMA
+Congress passed the National Flood Insurance Act (NFIA), 42 U.S.C. 4001 in 1968, creating the National Flood Insurance Program (NFIP) in order to reduce future flood losses through flood hazard identification, floodplain management, and providing insurance protection. The Department of Housing and Urban Development (HUD) originally administered the NFIP, and Congress subsequently transferred the NFIP to FEMA upon its creation in 1979. FEMA and insurance companies participating in FEMA's Write Your Own (WYO) program offer NFIP insurance coverage for building structures as well as for contents and personal property within the building structures to eligible and insurable properties. The WYO program began in 1983 with NFIP operating under Part B of the NFIA and allows FEMA to authorize private insurance companies to issue the Standard Flood Insurance Policy (SFIP) as FEMA's fiduciary and fiscal agent. FEMA administers NFIP by ensuring insurance applications are processed properly; determining correct premiums; renewing, reforming, and cancelling insurance policies; transferring policies from the seller of the property to the purchaser of the property in certain circumstances; and processing insurance claims.
+
+The paid premiums of SFIPs and claims payments for damaged property are processed through the National Flood Insurance Fund (NFIF). NFIF was established by the National Flood Insurance Act of 1968 (42 U.S.C. 4001, et seq.), and is a centralized premium revenue and fee-generated fund that supports NFIP, which holds these U.S. Treasury funds.
+
+# NFIP datasets: 
+1. NFIP redacted claims
+This dataset provides details on NFIP claims transactions. It is derived from the NFIP system of record, staged in the NFIP reporting platform and redacted to protect policy holder personally identifiable information.
+
+This dataset represents more than 2,000,000 claims transactions. In order to improve accessibility, we have one compressed file. Due to the file size we recommend using Access, SQL, or another programming/data management tool to visualize and manipulate the data, as Excel will not be able to process files this large without data loss. The dataset will be updated approximately monthly and will have a lag with the system of record.
+
+```{r}
+redacted_claims <- open_fema("fimaNfipClaims")
+
+# temporal and spatial resolution/range:
+    # years: 1978-2024
+    # lat/long to the first decimal place, county, census tract, block group, zip, city
+```
+
+2. NFIP redacted policies
+This dataset provides details on NFIP policy transactions. It is derived from the NFIP system of record, staged in the NFIP reporting platform and redacted to protect policy holder personally identifiable information.
+
+This dataset represents more than 80,000,000 policy transactions. In order to improve accessibility, we have one compressed file. Due to the file size we recommend using Access, SQL, or another programming/data management tool to visualize and manipulate the data, as Excel will not be able to process files this large without data loss. The dataset will be updated approximately monthly and will have a lag with the system of record.
+
+```{r}
+redacted_claims <- read_parquet(paste0(raw_data_dir,
+    "fema/FimaNfipPolicies.parquet"))
+
+# temporal and spatial resolution/range:
+    # years: 1978-2024
+    # lat/long to the first decimal place, county, census tract, block group, zip, city
+```
+
+3. NFIP reinsurance placement information
+4. NFIP community layer comprehensive
+5. NFIP community layer no overlaps split
+6. NFIP community layer no overlaps whole
+7. NFIP community status book
+8. NFIP multiple loss properties 
+9. NFIP residential penetration rates 

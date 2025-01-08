@@ -1,0 +1,167 @@
+---
+title: "The National Flood Insurance Program (NFIP)"
+subtitle: "Spatial distribution of designations, policies, and claims across the United States"
+author: "Lauren Blair Wilner, MPH"
+location: "Cascadia 2025"
+date: "`r Sys.Date()`"
+output: 
+  ioslides_presentation:
+    widescreen: true
+    smaller: true
+---
+
+
+## Background
+
+<div style="display: flex; align-items: flex-start;">
+
+  <!-- Left column: Text -->
+  <div style="flex: 1; padding-right: -10px;">
+
+- Floods accounted for the majority of 4 million climate change attributable deaths from 2000–2024.<sup>1-4</sup>  
+- **Flood frequency is expected to triple** from 2020 to 2050.<sup>5</sup>  
+- Floods are associated with **elevated mortality rates**. <sup>3, 4, 6, 7-13</sup>
+  </div>
+
+  <!-- Right column: Image -->
+  <div style="flex: 3; text-align: right; margin-top: -40px;">
+```{r flooding, echo=FALSE, message=FALSE, out.width='80%'}
+library(knitr)
+library(kableExtra)
+
+include_graphics("~/Desktop/Desktop/epidemiology_PhD/00_repos/nfip_data_compilation/cascadia2025/historic_flooding.png")
+```
+</div>
+
+<div style="font-size: 0.5em; color: gray; text-align: right; margin-top: -15px;">
+    Image source: US EPA.
+</div>
+
+</div>
+
+
+## FEMA programs
+Two U.S. federal programs aim to **prevent and mitigate flood effects** and reduce mortality risk among older adults:  
+<br>
+<br>
+<div class="center">
+
+1. **FEMA National Flood Insurance Program (NFIP):** Provides flood insurance for homes and properties.  
+2. **Individuals and Households Program (IHP):** Offers financial and direct services to individuals. 
+
+</div>
+
+<br>
+<br>
+
+These programs promote **housing security** and reduce the **financial burden** after floods. We hypothesize that they buffer the effects of floods on health and mortality, though epidemiologic studies of them are limited. 
+
+
+
+## National Flood Insurance Program (NFIP)
+
+- Goals of FEMA's NFIP:<sup>15</sup> 
+  - Reduce financial burden due to flood damage by providing public and private flood insurance options
+  - Incentives communities to adopt floodplain management regulations and build in safer areas
+- Not universally available. 
+- Availability relies on a community opting into the program and the community's flood risk designation.
+- **No comprehensive, nationwide spatial dataset of NFIP designations, policies, and claims.** 
+
+```{r nfip, echo=FALSE, message=FALSE, out.width='100%'}
+library(knitr)
+library(kableExtra)
+
+include_graphics("~/Desktop/Desktop/epidemiology_PhD/00_repos/nfip_data_compilation/cascadia2025/nfip_info.png")
+```
+
+<div style="font-size: 0.1em; color: gray; text-align: right; position: relative; top: -20px; right: 28px;">
+  Image source: <a href="https://agents.floodsmart.gov/sites/default/files/fema-nfip-fast-facts-flood-insurance-infographic-11-2024.pdf" style="color: gray;">FEMA NFIP Fast Facts</a>
+</div>
+
+
+## NFIP designations across the United States
+A primary goal of this project is to create this comprehensive, nationwide spatial dataset of NFIP designations, policies, and claims. We will focus on part I for this presentation.
+
+<br>
+
+ **Part I: Designations**
+ <br> 
+
+ NFIP has three mutually exclusive categories across the US. 
+ <br> 
+
+ We combine **FEMA’s SFHA (required NFIP) shapefile** with their **geodatabase of locations where NFIP is available (required or optional NFIP) or unavailable** to create a continuous NFIP designation surface. 
+
+<br>
+
+```{r nfip-table, echo=FALSE, message=FALSE}
+# Define the data
+nfip_table <- data.frame(
+  `NFIP Designation` = c(
+    "Required in federally designated special flood hazard areas (SFHAs)",
+    "Optional in communities that have opted into the program",
+    "Unavailable"
+  ),
+  `Data Source` = c(
+    "FEMA National Flood Hazard Layer (NFHL) that identifies SFHAs",
+    "FEMA's NFIP designation geodatabase with SFHAs filtered out",
+    "Locations outside NFHL & FEMA's NFIP database"
+  )
+)
+
+# Render the table with styling
+kable(
+  nfip_table, 
+  col.names = c("NFIP Designation", "Data Source"), # Custom labels
+  align = c("l", "l"), 
+  booktabs = TRUE, 
+  escape = FALSE
+) %>%
+  kable_styling(full_width = FALSE, position = "center") %>%
+  row_spec(0, bold = TRUE)
+```
+
+
+## NFIP designations in the Pacific Northwest
+
+<!-- <div style="display: flex; align-items: center;"> -->
+
+<!-- Left column for the text -->
+<!-- <div style="flex: 5; padding-right: 20px;"> -->
+<!-- The goal of this project is to create a comprehensive, nationwide spatial dataset of NFIP designations, policies, and claims. Below is a snapshot of this dataset in the Pacific Northwest region of the US. -->
+<!-- </div> -->
+
+<!-- Right column for the image -->
+<!-- <div style="flex: 5; text-align: center;"> -->
+```{r, echo=FALSE, message=FALSE, fig.align='center', out.width='70%'}
+include_graphics("~/Desktop/Desktop/epidemiology_PhD/00_repos/nfip_data_compilation/plots/aim1_nfip_pnw.png")
+```
+
+## Next steps
+
+<br>
+
+1. Include NFIP policies and claims data in the spatial dataset.
+2. Determine the meaning of missing areas in these source datasets. 
+3. Analyze the spatial distribution of NFIP designations, policies, and claims across the US.
+4. Make dataset publicly available for other researchers to use. 
+
+## References
+
+<span style="font-size: 0.8em; line-height: 1.2;">
+1. WHO. Climate change and health. World Health Organization. [https://www.who.int/news-room/fact-sheets/detail/climate-change-and-health](https://www.who.int/news-room/fact-sheets/detail/climate-change-and-health)  
+2. IPCC. Special Report on Global Warming of 1.5°C. Intergovernmental Panel on Climate Change. [https://www.ipcc.ch/sr15/](https://www.ipcc.ch/sr15/)  
+3. FEMA. Flooding and climate change. Federal Emergency Management Agency. [https://www.fema.gov/floods](https://www.fema.gov/floods)  
+4. NOAA. Billion-dollar weather and climate disasters. National Oceanic and Atmospheric Administration. [https://www.ncdc.noaa.gov/billions/](https://www.ncdc.noaa.gov/billions/)  
+5. IPCC. Climate Change 2021: The Physical Science Basis. Intergovernmental Panel on Climate Change. [https://www.ipcc.ch/report/ar6/wg1/](https://www.ipcc.ch/report/ar6/wg1/)  
+6. US Census Bureau. Aging of the baby boomers. [https://www.census.gov/library/stories/2018/06/graying-america.html](https://www.census.gov/library/stories/2018/06/graying-america.html)  
+7. CRED. Disaster mortality 2000–2024. Centre for Research on the Epidemiology of Disasters. [https://cred.be/](https://cred.be/)  
+8. NOAA. Age-related risks of flooding. National Oceanic and Atmospheric Administration. [https://www.noaa.gov/](https://www.noaa.gov/)  
+9. FEMA NFIP. National Flood Insurance Program overview. Federal Emergency Management Agency. [https://www.fema.gov/nfip](https://www.fema.gov/nfip)  
+10. HUD. Social vulnerabilities and disasters. U.S. Department of Housing and Urban Development. [https://www.huduser.gov/](https://www.huduser.gov/)  
+11. CDC. Disaster-related health risks. Centers for Disease Control and Prevention. [https://www.cdc.gov/disasters/](https://www.cdc.gov/disasters/)  
+12. NIH. Aging and disasters: risks and resilience. National Institute on Aging. [https://www.nia.nih.gov/](https://www.nia.nih.gov/)  
+13. IPCC. Adaptation and climate resilience. Intergovernmental Panel on Climate Change. [https://www.ipcc.ch/](https://www.ipcc.ch/)  
+14. US EPA, O. Climate Change Indicators: Coastal Flooding. https://www.epa.gov/climate-indicators/climate-change-indicators-coastal-flooding (2016).  
+15. FEMA. NFIP Fast Facts: Flood Insurance Infographic. November 2024. Available at: [https://agents.floodsmart.gov/sites/default/files/fema-nfip-fast-facts-flood-insurance-infographic-11-2024.pdf](https://agents.floodsmart.gov/sites/default/files/fema-nfip-fast-facts-flood-insurance-infographic-11-2024.pdf)
+</span>
