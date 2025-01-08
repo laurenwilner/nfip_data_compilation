@@ -2,6 +2,10 @@
 .Rhistory
 .Rapp.history
 
+.lintr
+plots/*
+*/.png
+
 # Session Data files
 .RData
 .RDataTmp
