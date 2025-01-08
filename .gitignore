@@ -4,7 +4,9 @@
 
 .lintr
 plots/*
-*/.png
+*/*.png
+*/*.html
+notebooks/*
 
 # Session Data files
 .RData
